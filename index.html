@@ -1,12 +1,23 @@
 <head>
 <script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+<style>
+.red-border {
+    border: 1px solid pink;
+}
+
+.green-border {
+    border: 1px solid green;
+}
+</style>
+
 </head>
 
 <h1>Hello</h1>
 
-<pre id="page-console" style='border: 1px solid pink; height: 15em; overflow-y: scroll; width: 100%'></pre>
+<div style="display: flex">
 
-<textarea id=latex-code-area style="width: 100%; height: 100%">
+<textarea id=latex-code-area style="width: 80%; height: 80%">
 \listfiles
 \documentclass{article}
 
@@ -179,6 +190,10 @@ Block decomposition for all binary strings: $1^*(0^*01^*1)0^*$
 \end{document}
 </textarea>
 
+<pre id="page-console" style='max-height: 50em; overflow-y: scroll; overflow-x: hidden; width: 20%'></pre>
+
+</div>
+
 <script>
 $(window).keydown(function(event) {
     if (!(event.which == 83 && event.ctrlKey) && !(event.which == 19)) return true;
@@ -188,8 +203,10 @@ $(window).keydown(function(event) {
         const returnCode = res.return_code;
 
         if (returnCode === 0) {
+            $('#page-console').removeClass('red-border').addClass('green-border');
             $('#page-console').empty().append('OK');
         } else {
+            $('#page-console').removeClass('green-border').addClass('red-border');
             const log = res.log;
             $('#page-console').empty().append(log);
             $('#page-console').scrollTop($('#page-console')[0].scrollHeight);
