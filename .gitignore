@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+node_modules/
+tmp.tex
+tmp.aux
+tmp.log
+tmp.pdf

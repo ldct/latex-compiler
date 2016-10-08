@@ -1,0 +1,200 @@
+<head>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+</head>
+
+<h1>Hello</h1>
+
+<pre id="page-console" style='border: 1px solid pink; height: 15em; overflow-y: scroll; width: 100%'></pre>
+
+<textarea id=latex-code-area style="width: 100%; height: 100%">
+\listfiles
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\def\N{\mathbb{N}}
+
+
+\usepackage[a4paper,margin=1in]{geometry}
+
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{1em}
+
+\title{MATH 249 Notes}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Binomial Theorem}
+Consdider a subset $S \subseteq \{1, 2, \ldots n\}$
+
+The indicator sequence of S is the sequence $f(S) = (f_1, f_2 \ldots f_n)$ with each $f_i \in \{0, 1\}$ where $f_i(S) = 0 if i \not\in S, 1 if i \in S$
+
+Binomial theorem: $(1+x)^n = \sum \binom{n}{k} x^n$
+
+Proof: we have a bijection between the sets P(n), the set of subsets of $\{1 \ldots n\}, and the set \{0, 1\}^n$, the set of indicator sequences of subsets of n.
+
+\begin{align*}
+P(n) &\to 0, 1 ^n \\
+S &\to (a_1, a_2 \ldots ) \\
+|S| &\to a_1 + a_2 + \ldots \\
+\sum_{S \in P(n)} x^{|S|} &= \sum_{(a_1 \ldots ) \in \{0, 1\}^n} x^{a_1 + a_2 \ldots } \\
+&= \sum_{a_1 \in \{0, 1\}} x^{a_1} \sum_{a_2 \in \{0, 1\}} x^{a_2} \ldots \\
+&= (\sum_{a \in \{0, 1\}} x^a)^n \\
+&= (1 + x)^n
+\end{align*}
+
+\section*{Multisets}
+
+There are $t \ge 1$ types of elements, each type of element can occur any natural number of times
+
+Eg 5 types of element G, Y, O, R, P
+
+a multiset with 10 elements of those types might look like (G, G, Y, O, O, O, R, R, R, P)
+
+Given $t \ge 1 and n \ge 0$, how many multisets of size n with t types of elements are there?
+
+Adapting the indicator function, let the example get the sequence $(2, 1, 3, 3, 1) \in N^t$
+
+Let M(n, t) be the set of all multisets of size n with t types of elements, and M(t) be the set of all multisets with t types of elements
+
+$\sum_{\mu \in M(t)} x^{|\mu|} = \sum_{(m_1, \ldots, m_t) \in \N^t} x^{m_1, m_2 \ldots, m_t}$
+
+To groups the LHS by powers of x, we need $|M(n, t)| = \binom{n+t-1}{t-1}$. Proof: trivial
+
+\section*{Binomial Series expansion for negative integers}
+
+\begin{align*}
+\sum_{\mu \in M(t)} x^{|\mu|} &= \sum_{n \in \N} \binom{n+t-1}{t-1} x^n \\
+&= \sum_{(m_1, \ldots m_t) \in \N^t} x^{m_1 + \ldots + m_t} \\
+&= \sum_{m_1 \in \N} \sum_{m_2 \in \N} \ldots \sum_{m_t \in \N} x^{m_1 + \ldots m_t} \\
+&= \sum_{m_1 \in \N} x^{m_1}  \ldots \\
+&= \left( \sum_{m \in \N} x^m \right)^t \\
+&= \frac{1}{(1-x)^t}
+\end{align*}
+
+\section*{Vandermonde Convolution}
+
+\begin{align*}
+(1+x)^{a+b} &= (1+x)^a (1+x)^b \\
+\sum_{k = 0}^{a+b} \binom{a+b}{k} x^k &= \left( \sum_{i=0}^a \binom{a}{i} x^i\right) \left( \sum_{j=0}^a \binom{a}{j} x^j\right) \\
+&= \sum_{i \in [0, a]} \sum_{j \in [0, b]} \binom{a}{i} \binom{b}{j} x^{i+j} \\
+&= \sum_{k \in [0, a+b]} \left( \sum \binom{a}{i} \binom{k}{k-i} x^k \right) x^k
+\end{align*}
+
+\section*{Extracting powers}
+
+Eg: Let $\sum_{n \in \N} g_n x^n = \frac{1-x^2}{1 - 3x + 4x^3}$, find $g_n$.
+
+\begin{align*}
+(1 - 3x + 4x^3) \sum_{n \in \N} g_n x^n &= 1 - x^2 \\
+\sum_{i \in N} g_i x^i - 3 \sum_{j \in \N} g_j x^{j+1} + 4 \sum_{k \in \N} g_k x^{k+3} &= 1 - x^2
+\end{align*}
+
+Extract coefficient of $x^n$ on LHS and RHS.
+
+$n = 0: g_0 = 1$
+
+$n = 1: g_1 - 3g_0 = 0$
+
+$n = 2: g_2 - 3g_1 = -1$
+
+$n = 3: g_3 - 3g_2 + 4g_0 = 0$
+
+$n \ge 4: g_n - 3g_{n-1} + 4g_{n-3} = 0$
+
+\section*{Generating Functions}
+
+Let $S$ be a set. Assum that each element $\sigma \in S$ has a weight $w(\sigma) \in \N$. Then $\sum_{\sigma \in S} x^{\omega(\sigma)}$ makes sense.
+
+The set of compositions of length 1 has generating function $\sum_c x^c$. The set of compositions of length 2 has generating function
+
+\begin{align*}
+\sum_{c_1, c_2} x^{c_1 + c_2} &= \sum_{c_1} x^{c_1} \sum_{c_2} x^{c_2} \\
+&= \left(\frac{x}{1-x}\right)^2
+\end{align*}
+
+The set of compositions of arbitrary length is
+
+\begin{align*}
+\sum_k \left(\frac{x}{1-x}\right)^k &= \frac{1}{1 - \frac{x}{1-x}} \\
+&= \frac{1-x}{1-2x}
+\end{align*}
+
+Eg: Find ogf of compositions with all parts $\ge 2$
+
+One part in the set $\{2, 3 \ldots \}: x^2 + x^3 + \ldots = \frac{x^2}{1-x}$
+
+k parts: $(\frac{x^2}{1-x})^k$ by the product lemma
+
+For all $k \in \N$, we sum this.  Hence $|G_n| = f_{n-2}$ (fibonacci number)
+
+Eg: Compositions such that the length is odd and all parts have size 1 or 2
+
+One part in $\{1, 2\}$: ogf is $x + x^2$
+
+$k$ parts: $(x + x^2)^k$
+
+sum over odd $k$
+
+Q. Among all $2^n-1$ composition of size $n$, what is the average number of parts of size 1? (Eg $n=4$, it's $3/2$)
+
+For each composition $\gamma$ let $|\gamma|$ be the length and $f(\gamma)$ be the number of parts of size 1. Let $C(x, y) = \sum_{\gamma \in \N^*} x^|\gamma| y^f(\gamma)$.
+
+One part in $\{1, 2, 3 \ldots \}$
+
+We have the ogf $xy + x^2 + x^3 + \ldots = xy + \frac{x^2}{1-x}$.
+
+$k$ parts in $\{1, 2, 3 \ldots \}$ we have $(xy + \frac{x^2}{1-x})^k$ by the product lemmma.
+
+$C(x, y)$ is the sum over all k, which is $\frac{1}{1 - (xy + x^2/(1-x))}$
+
+$[x^n] \partial / \partial y C(x, y) | y = 1 = \sum_{|\gamma| = n} f(\gamma)$
+
+\section*{Rational Language}
+
+RS is concatenation, $R \smile S$ is set union, $R* = \cup_k R^k$
+
+A regular expression leads to a rational function. $RS$ leads to $R(x)S(x)$ and $R \smile S$ leads to $R(x) + S(x)$.
+
+A regular expression is umambiguous if R $\vartriangleright cursive R$ and each thing is produced once.
+
+$R \smile S$ is unambiguous when it is a disjoint union ($R \cap S = 0$)
+
+$RS$ is ambiguous when $|RS| = |R \times S|$.
+
+Theorem: Let $R$ be a regular expression. $R \vartriangleright R_{script}$ and $R \to R(x)$. If R is umambiguous then $R(x) = \sum_{\sigma \in R} x^{l(\sigma)}$.
+
+A block of $\sigma$ is a nonempty sequence of consecutive equal bits which is maximal.
+
+Let $L \subseteq \{0, 1\}^*$ consist of binary strings in which blocks of 0s have even length. $L$ is produced unambiguously by $(00 \smile 1)^*$ Then $L(x) = \frac{1}{1 - x - x^2}$.
+
+Let $L$ consist of binary strings in which blocks of 0s have odd length.
+
+Block decomposition for all binary strings: $1^*(0^*01^*1)0^*$
+\end{document}
+</textarea>
+
+<script>
+$(window).keydown(function(event) {
+    if (!(event.which == 83 && event.ctrlKey) && !(event.which == 19)) return true;
+    event.preventDefault();
+    const latexSource = $('#latex-code-area').val();
+    $.post('/compile', latexSource, function (res) {
+        const returnCode = res.return_code;
+
+        if (returnCode === 0) {
+            $('#page-console').empty().append('OK');
+        } else {
+            const log = res.log;
+            $('#page-console').empty().append(log);
+            $('#page-console').scrollTop($('#page-console')[0].scrollHeight);
+        }
+    });
+    return false;
+});
+</script>
